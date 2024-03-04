@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_your_model_graph" model="ir.actions.act_window">
+        <field name="name">Your Model Graph</field>
+        <field name="res_model">stock.picking.batch</field>
+        <field name="view_mode">graph</field>
+        <field name="context">{'default_view': 'graph'}</field>
+        <field name="view_id" ref="stock_transport.view_inventory"/>
+    </record>
+
+    <record id="view_inventory" model="ir.ui.view">
+        <field name="name">inventory.graph.view</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="arch" type="xml">
+            <graph string="Stock" type="bar">
+                <field name="scheduled_date" type="measure"/>
+                <field name="vehicle_category"/>
+            </graph>
+        </field>
+    </record>
+
+</odoo>
