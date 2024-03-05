@@ -2,17 +2,23 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, api
+from dateutil.relativedelta import relativedelta
 
 class StockPickingBatchInherit(models.Model):
-    # _name = 'fleet.vehicle.model.category'
     _inherit = 'stock.picking.batch'
     _description = 'For form view of inventory batch'
 
     dock = fields.Many2one('dock', string='Dock')
     vehicle = fields.Many2one('fleet.vehicle', string='Vehicle')
     vehicle_category = fields.Many2one('fleet.vehicle.model.category', string='Vehicle Category')
-    weight = fields.Float(string='Weight', compute='_compute_weight', readonly=True)
-    volume = fields.Float(string='Volume', compute='_compute_volume', readonly=True)
+    weight = fields.Float(string='Weight', compute='_compute_weight', store=True)
+    volume = fields.Float(string='Volume', compute='_compute_volume', store=True)
+    date_start = fields.Date(string='Start date', default=fields.Date.today())
+    date_stop = fields.Date(string='End date', default=fields.Date.today()+relativedelta(days=4))
+
+    def _compute_display_name(self):
+        for rec in self:
+            rec.display_name = f"{rec.name} ({rec.weight}kg, {rec.volume}m³)"
 
     @api.onchange('picking_ids')
     def _compute_weight(self):

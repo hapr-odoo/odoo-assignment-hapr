@@ -4,7 +4,6 @@
 from odoo import fields, models
 
 class FleetCategory(models.Model):
-    # _name = 'fleet.vehicle.model.category'
     _inherit = 'fleet.vehicle.model.category'
     _description = 'For list view of fleet categories'
 
